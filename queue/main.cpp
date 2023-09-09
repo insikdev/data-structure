@@ -1,3 +1,4 @@
+#include "deque.h"
 #include "queue.h"
 
 int main()
@@ -12,6 +13,17 @@ int main()
         q.Pop();
         q.Push(4);
         q.Print();
+    }
+
+    {
+        Deque<int> d;
+        d.PopBack();
+
+        d.PushFront(0);
+        d.PushFront(1);
+        d.PushFront(2);
+        d.PopBack();
+        d.Print();
     }
 
     return 0;

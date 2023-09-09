@@ -1,13 +1,13 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef DEQUE_H
+#define DEQUE_H
 
 #include <cassert>
 #include <iostream>
 
 template <typename T>
-class Queue {
+class Deque {
 public:
-    Queue(int capacity = 5)
+    Deque(int capacity = 5)
         : m_capacity { capacity }
         , m_front { 0 }
         , m_rear { 0 }
@@ -15,7 +15,7 @@ public:
     {
     }
 
-    Queue(const Queue& other)
+    Deque(const Deque& other)
         : m_capacity { other.m_capacity }
         , m_front { other.m_front }
         , m_rear { other.m_rear }
@@ -24,14 +24,24 @@ public:
         memcpy(m_data, other.m_data, sizeof(T) * m_capacity);
     }
 
-    ~Queue()
+    ~Deque()
     {
         if (m_data) {
             delete[] m_data;
         }
     }
 
-    void Push(const T& data)
+    void PushFront(const T& data)
+    {
+        if (IsFull()) {
+            ExpandCapacity();
+        }
+
+        m_data[m_front] = data;
+        m_front = (m_front - 1 + m_capacity) % m_capacity;
+    }
+
+    void PushBack(const T& data)
     {
         if (IsFull()) {
             ExpandCapacity();
@@ -41,11 +51,18 @@ public:
         m_data[m_rear] = data;
     }
 
-    void Pop()
+    void PopFront()
     {
         assert(!IsEmpty());
 
         m_front = (m_front + 1) % m_capacity;
+    }
+
+    void PopBack()
+    {
+        assert(!IsEmpty());
+
+        m_rear = (m_rear - 1 + m_capacity) % m_capacity;
     }
 
     T& Front()
@@ -64,11 +81,7 @@ public:
 
     int Size()
     {
-        if (m_front <= m_rear) {
-            return m_rear - m_front;
-        }
-
-        return m_capacity + m_rear - m_front;
+        return (m_rear - m_front + m_capacity) % m_capacity;
     }
 
     bool IsEmpty()
@@ -78,7 +91,7 @@ public:
 
     void Print()
     {
-        std::cout << "Print Queue" << std::endl;
+        std::cout << "Print Deque" << std::endl;
 
         for (int i = (m_front + 1) % m_capacity; i != (m_rear + 1) % m_capacity; i = (i + 1) % m_capacity) {
             std::cout << m_data[i] << ' ';
@@ -116,4 +129,4 @@ private:
     }
 };
 
-#endif /* QUEUE_H */
+#endif /* DEQUE_H */

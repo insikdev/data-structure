@@ -11,7 +11,9 @@ public:
     Stack(int capacity = 5)
         : m_capacity { capacity }
         , m_top { -1 }
-        , m_data { new T[capacity] } {};
+        , m_data { new T[capacity] }
+    {
+    }
 
     Stack(const Stack& other)
         : m_capacity { other.m_capacity }
@@ -35,14 +37,14 @@ public:
         }
 
         m_data[++m_top] = data;
-    };
+    }
 
     void Pop()
     {
         assert(!IsEmpty());
 
         m_top--;
-    };
+    }
 
     T& Top()
     {
@@ -59,7 +61,7 @@ public:
     bool IsEmpty()
     {
         return m_top == -1;
-    };
+    }
 
     void Print()
     {
