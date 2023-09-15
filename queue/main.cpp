@@ -17,8 +17,6 @@ int main()
 
     {
         Deque<int> d;
-        d.PopBack();
-
         d.PushFront(0);
         d.PushFront(1);
         d.PushFront(2);

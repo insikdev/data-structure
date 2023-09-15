@@ -1,5 +1,4 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#pragma once
 
 #include <cassert>
 #include <iostream>
@@ -9,8 +8,6 @@ class Queue {
 public:
     Queue(int capacity = 5)
         : m_capacity { capacity }
-        , m_front { 0 }
-        , m_rear { 0 }
         , m_data { new T[capacity] }
     {
     }
@@ -24,11 +21,53 @@ public:
         memcpy(m_data, other.m_data, sizeof(T) * m_capacity);
     }
 
+    Queue(Queue&& other) noexcept
+        : m_data { other.m_data }
+        , m_front { other.m_front }
+        , m_rear { other.m_rear }
+        , m_capacity { other.m_capacity }
+    {
+        other.m_data = nullptr;
+        other.m_front = 0;
+        other.m_rear = 0;
+        other.m_capacity = 0;
+    }
+
+    Queue& operator=(const Queue& rhs)
+    {
+        if (this != &rhs) {
+            Clear();
+            m_front = rhs.m_front;
+            m_rear = rhs.m_rear;
+            m_capacity = rhs.m_capacity;
+            m_data = new T[m_capacity];
+
+            memcpy(m_data, rhs.m_data, sizeof(T) * m_capacity);
+        }
+        return *this;
+    }
+
+    Queue& operator=(Queue&& rhs) noexcept
+    {
+        if (this != &rhs) {
+            Clear();
+            m_front = rhs.m_front;
+            m_rear = rhs.m_rear;
+            m_capacity = rhs.m_capacity;
+            m_data = rhs.m_data;
+
+            rhs.m_data = nullptr;
+            rhs.m_front = 0;
+            rhs.m_rear = 0;
+            rhs.m_capacity = 0;
+        }
+
+        return *this;
+    }
+
     ~Queue()
     {
-        if (m_data) {
-            delete[] m_data;
-        }
+        Clear();
     }
 
     void Push(const T& data)
@@ -48,21 +87,21 @@ public:
         m_front = (m_front + 1) % m_capacity;
     }
 
-    T& Front()
+    const T& Front() const
     {
         assert(!IsEmpty());
 
         return m_data[(m_front + 1) % m_capacity];
     }
 
-    T& Back()
+    const T& Back() const
     {
         assert(!IsEmpty());
 
         return m_data[m_rear];
     }
 
-    int Size()
+    size_t Size() const
     {
         if (m_front <= m_rear) {
             return m_rear - m_front;
@@ -71,17 +110,21 @@ public:
         return m_capacity + m_rear - m_front;
     }
 
-    bool IsEmpty()
+    bool IsEmpty() const
     {
         return m_front == m_rear;
     }
 
-    void Print()
+    void Print() const
     {
         std::cout << "Print Queue" << std::endl;
 
-        for (int i = (m_front + 1) % m_capacity; i != (m_rear + 1) % m_capacity; i = (i + 1) % m_capacity) {
-            std::cout << m_data[i] << ' ';
+        if (Size() == 0) {
+            std::cout << "empty";
+        } else {
+            for (int i = (m_front + 1) % m_capacity; i != (m_rear + 1) % m_capacity; i = (i + 1) % m_capacity) {
+                std::cout << m_data[i] << ' ';
+            }
         }
 
         std::cout << std::endl;
@@ -89,10 +132,11 @@ public:
 
 private:
     T* m_data;
-    int m_front;
-    int m_rear;
+    int m_front { 0 };
+    int m_rear { 0 };
     int m_capacity;
 
+private:
     bool IsFull()
     {
         return ((m_rear + 1) % m_capacity) == m_front;
@@ -114,6 +158,12 @@ private:
         delete[] m_data;
         m_data = expand;
     }
-};
 
-#endif /* QUEUE_H */
+    void Clear()
+    {
+        delete[] m_data;
+        m_front = 0;
+        m_rear = 0;
+        m_capacity = 0;
+    }
+};

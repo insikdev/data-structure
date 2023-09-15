@@ -23,11 +23,9 @@ int main(void)
         s.Push('l');
         s.Push('o');
 
-        Stack<char> s2 { s };
-
-        while (!s2.IsEmpty()) {
-            std::cout << s2.Top();
-            s2.Pop();
+        while (!s.IsEmpty()) {
+            std::cout << s.Top();
+            s.Pop();
         }
     }
 
