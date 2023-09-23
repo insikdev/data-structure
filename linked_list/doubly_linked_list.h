@@ -18,7 +18,7 @@ public:
     {
         Node* current = other.m_head;
 
-        while (current != nullptr) {
+        while (current) {
             PushBack(current->data);
             current = current->next;
         }
@@ -36,7 +36,7 @@ public:
             Clear();
             Node* current = rhs.m_head;
 
-            while (current != nullptr) {
+            while (current) {
                 PushBack(current->data);
                 current = current->next;
             }
@@ -75,7 +75,7 @@ public:
         } else {
             Node* current = m_head;
 
-            while (current->next != nullptr) {
+            while (current->next) {
                 current = current->next;
             }
 
@@ -108,7 +108,7 @@ public:
             delete current;
             m_head = nullptr;
         } else {
-            while (current->next->next != nullptr) {
+            while (current->next->next) {
                 current = current->next;
             }
 
@@ -121,7 +121,7 @@ public:
     {
         Node* current = m_head;
 
-        while (current != nullptr) {
+        while (current) {
             Node* tmp = current;
             current = current->next;
             delete tmp;
@@ -143,7 +143,7 @@ public:
 
         Node* current = m_head;
 
-        while (current->next != nullptr) {
+        while (current->next) {
             current = current->next;
         }
 
@@ -160,7 +160,7 @@ public:
         int count = 0;
         Node* current = m_head;
 
-        while (current != nullptr) {
+        while (current) {
             current = current->next;
             count++;
         }
@@ -177,7 +177,7 @@ public:
         } else {
             Node* current = m_head;
 
-            while (current != nullptr) {
+            while (current) {
                 std::cout << current->data << " ";
                 current = current->next;
             }
