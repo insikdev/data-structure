@@ -101,7 +101,7 @@ public:
     {
         std::cout << "Print Stack" << std::endl;
 
-        if (Size() == 0) {
+        if (IsEmpty()) {
             std::cout << "empty";
         } else {
             for (int i = 0; i <= m_top; i++) {

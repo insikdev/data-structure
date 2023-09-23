@@ -119,7 +119,7 @@ public:
     {
         std::cout << "Print Queue" << std::endl;
 
-        if (Size() == 0) {
+        if (IsEmpty()) {
             std::cout << "empty";
         } else {
             for (int i = (m_front + 1) % m_capacity; i != (m_rear + 1) % m_capacity; i = (i + 1) % m_capacity) {

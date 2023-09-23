@@ -5,11 +5,10 @@ int main(void)
     {
         Stack<int> s;
 
-        s.Push(0);
-        s.Push(1);
-        s.Push(2);
-        s.Push(3);
-        s.Push(4);
+        for (int i : { 0, 1, 2, 3, 4 }) {
+            s.Push(i);
+        }
+
         s.Pop();
         s.Print();
     }
@@ -17,11 +16,9 @@ int main(void)
     { // reverse string
         Stack<char> s;
 
-        s.Push('H');
-        s.Push('e');
-        s.Push('l');
-        s.Push('l');
-        s.Push('o');
+        for (char i : "Hello") {
+            s.Push(i);
+        }
 
         while (!s.IsEmpty()) {
             std::cout << s.Top();
