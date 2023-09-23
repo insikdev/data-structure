@@ -4,16 +4,17 @@
 #include <iostream>
 
 template <typename T>
-class SinglyLinkedList {
+class DoublyLinkedList {
 public:
     struct Node {
         T data;
+        Node* prev;
         Node* next;
     };
 
-    SinglyLinkedList() = default;
+    DoublyLinkedList() = default;
 
-    SinglyLinkedList(const SinglyLinkedList& other)
+    DoublyLinkedList(const DoublyLinkedList& other)
     {
         Node* current = other.m_head;
 
@@ -23,13 +24,13 @@ public:
         }
     }
 
-    SinglyLinkedList(SinglyLinkedList&& other) noexcept
+    DoublyLinkedList(DoublyLinkedList&& other) noexcept
         : m_head { other.m_head }
     {
         other.m_head = nullptr;
     }
 
-    SinglyLinkedList& operator=(const SinglyLinkedList& rhs)
+    DoublyLinkedList& operator=(const DoublyLinkedList& rhs)
     {
         if (this != &rhs) {
             Clear();
@@ -43,7 +44,7 @@ public:
         return *this;
     }
 
-    SinglyLinkedList& operator=(SinglyLinkedList&& rhs) noexcept
+    DoublyLinkedList& operator=(DoublyLinkedList&& rhs) noexcept
     {
         if (this != &rhs) {
             Clear();
@@ -54,20 +55,20 @@ public:
         return *this;
     }
 
-    ~SinglyLinkedList()
+    ~DoublyLinkedList()
     {
         Clear();
     }
 
     void PushFront(const T& data)
     {
-        Node* newNode { new Node { data, m_head } };
+        Node* newNode { new Node { data, nullptr, m_head } };
         m_head = newNode;
     }
 
     void PushBack(const T& data)
     {
-        Node* newNode { new Node { data, nullptr } };
+        Node* newNode { new Node { data, nullptr, nullptr } };
 
         if (IsEmpty()) {
             m_head = newNode;
@@ -79,6 +80,7 @@ public:
             }
 
             current->next = newNode;
+            newNode->prev = current;
         }
     }
 
@@ -87,7 +89,12 @@ public:
         assert(!IsEmpty());
 
         Node* current = m_head;
-        m_head = current->next;
+
+        if (current->next) {
+            current->next->prev = nullptr;
+            m_head = current->next;
+        }
+
         delete current;
     }
 
@@ -163,7 +170,7 @@ public:
 
     void Print() const
     {
-        std::cout << "Print Singly Linked List" << std::endl;
+        std::cout << "Print Doubly Linked List" << std::endl;
 
         if (IsEmpty()) {
             std::cout << "empty";
@@ -180,5 +187,5 @@ public:
     }
 
 private:
-    Node* m_head {};
+    Node* m_head;
 };
