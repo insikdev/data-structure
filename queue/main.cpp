@@ -15,6 +15,29 @@ int main()
         q.Print();
     }
 
+    { // Josephus Problem
+        int n = 7;
+        int k = 3;
+        Queue<int> q;
+
+        for (int i = 1; i <= n; i++) {
+            q.Push(i);
+        }
+
+        while (q.Size() != 1) {
+            for (int i = 0; i < k - 1; i++) {
+                int temp = q.Front();
+                q.Pop();
+                q.Push(temp);
+            }
+
+            std::cout << "Executed: " << q.Front() << std::endl;
+            q.Pop();
+        }
+
+        std::cout << "Survivor: " << q.Front() << std::endl;
+    }
+
     {
         Deque<int> d;
         d.PushFront(0);

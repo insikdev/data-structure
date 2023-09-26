@@ -1,3 +1,4 @@
+#include "binary_search_tree.h"
 #include "binary_tree.h"
 
 int main()
@@ -23,6 +24,52 @@ int main()
         b.LevelOrder();
         b.PreOrder();
         b.InOrder();
+    }
+
+    {
+        BinarySearchTree<int, int> t;
+
+        for (int num : { 5, 8, 2, 7, 4, 9 }) {
+            t.Insert({ num, num });
+        }
+
+        t.InOrderRecursive();
+        t.Remove(5);
+        t.InOrderRecursive();
+        t.InOrderRecursive();
+    }
+
+    { // test constructor
+
+        BinarySearchTree<int, int> t;
+
+        for (int num : { 5, 8, 2, 7, 4, 9 }) {
+            t.Insert({ num, num });
+        }
+
+        BinarySearchTree<int, int> copy { t };
+
+        t.InOrderRecursive();
+        copy.InOrderRecursive();
+
+        t.Remove(7);
+        copy.Insert({ 10, 10 });
+        t.InOrderRecursive();
+        copy.InOrderRecursive();
+
+        BinarySearchTree<int, int> copy2;
+        copy2 = t;
+        t.Remove(5);
+        copy2.Insert({ 20, 20 });
+        copy2.InOrderRecursive();
+
+        BinarySearchTree<int, int> move { std::move(t) };
+        move.InOrderRecursive();
+
+        BinarySearchTree<int, int> move2;
+        move2 = std::move(move);
+
+        move2.InOrderRecursive();
     }
 
     return 0;

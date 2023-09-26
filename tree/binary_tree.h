@@ -18,30 +18,63 @@ public:
     {
     }
 
-    ~BinaryTree() { }
+    BinaryTree(const BinaryTree& other)
+        : m_root { CopyRecursive(other.m_root) }
+    {
+    }
 
-    void PreOrderRecursive()
+    BinaryTree(BinaryTree&& other) noexcept
+        : m_root { other.m_root }
+    {
+        other.m_root = nullptr;
+    }
+
+    BinaryTree& operator=(const BinaryTree& rhs)
+    {
+        if (this != &rhs) {
+            Clear();
+            m_root = CopyRecursive(rhs.m_root);
+        }
+        return *this;
+    }
+
+    BinaryTree& operator=(BinaryTree&& rhs) noexcept
+    {
+        if (this != &rhs) {
+            Clear();
+            m_root = rhs.m_root;
+            rhs.m_root = nullptr;
+        }
+        return *this;
+    }
+
+    ~BinaryTree()
+    {
+        Clear();
+    }
+
+    void PreOrderRecursive() const
     {
         std::cout << "pre order traversal using recursion" << std::endl;
         PreOrderRecursiveHelper(m_root);
         std::cout << std::endl;
     }
 
-    void InOrderRecursive()
+    void InOrderRecursive() const
     {
         std::cout << "in order traversal using recursion" << std::endl;
         InOrderRecursiveHelper(m_root);
         std::cout << std::endl;
     }
 
-    void PostOrderRecursive()
+    void PostOrderRecursive() const
     {
         std::cout << "post order traversal using recursion" << std::endl;
         PostOrderRecursiveHelper(m_root);
         std::cout << std::endl;
     }
 
-    void LevelOrder()
+    void LevelOrder() const
     {
         std::cout << "level order traversal" << std::endl;
 
@@ -64,7 +97,7 @@ public:
         std::cout << std::endl;
     }
 
-    void PreOrder()
+    void PreOrder() const
     {
         std::cout << "pre order traversal" << std::endl;
 
@@ -88,7 +121,7 @@ public:
         std::cout << std::endl;
     }
 
-    void InOrder()
+    void InOrder() const
     {
         std::cout << "in order traversal" << std::endl;
 
@@ -111,16 +144,45 @@ public:
         std::cout << std::endl;
     }
 
+    void Clear()
+    {
+        m_root = ClearRecursive(m_root);
+    }
+
 private:
     Node* m_root;
 
 private:
-    void Visit(Node* node)
+    Node* CopyRecursive(Node* node)
+    {
+        if (!node) {
+            return nullptr;
+        }
+
+        Node* newNode { new Node { node->item, nullptr, nullptr } };
+        newNode->left = CopyRecursive(node->left);
+        newNode->right = CopyRecursive(node->right);
+
+        return newNode;
+    }
+
+    Node* ClearRecursive(Node* node)
+    {
+        if (node) {
+            ClearRecursive(node->left);
+            ClearRecursive(node->right);
+            delete node;
+        }
+
+        return nullptr;
+    }
+
+    void Visit(Node* node) const
     {
         std::cout << node->data << " ";
     }
 
-    void PreOrderRecursiveHelper(Node* node)
+    void PreOrderRecursiveHelper(Node* node) const
     {
         if (node) {
             Visit(node);
@@ -129,7 +191,7 @@ private:
         }
     }
 
-    void InOrderRecursiveHelper(Node* node)
+    void InOrderRecursiveHelper(Node* node) const
     {
         if (node) {
             InOrderRecursiveHelper(node->left);
@@ -138,7 +200,7 @@ private:
         }
     }
 
-    void PostOrderRecursiveHelper(Node* node)
+    void PostOrderRecursiveHelper(Node* node) const
     {
         if (node) {
             PostOrderRecursiveHelper(node->left);
